@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://xaprice.github.io/"/>
-  <updated>2017-03-19T08:41:46.556Z</updated>
+  <updated>2017-03-19T14:18:26.608Z</updated>
   <id>https://xaprice.github.io/</id>
   
   <author>
@@ -16,11 +16,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>hexo-文章中插入本地图片</title>
+    <link href="https://xaprice.github.io/2017/03/19/hexo-use-local-images/"/>
+    <id>https://xaprice.github.io/2017/03/19/hexo-use-local-images/</id>
+    <published>2017-03-19T14:14:09.000Z</published>
+    <updated>2017-03-19T14:18:26.608Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="hexo-文章中插入本地图片"><a href="#hexo-文章中插入本地图片" class="headerlink" title="hexo-文章中插入本地图片"></a>hexo-文章中插入本地图片</h1><h2 id="修改hexo站点配置"><a href="#修改hexo站点配置" class="headerlink" title="修改hexo站点配置"></a>修改hexo站点配置</h2><p>编辑站点配置文件_config.yml，将post_asset_folder设置为true（默认为false）。</p>
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>在站点根目录执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</div></pre></td></tr></table></figure></p>
+<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p>在markdown文件中，使用如下语法插入图片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">![logo](post-name/pic.png)</div></pre></td></tr></table></figure></p>
+<p>其中post-name为文章名，pic.png是要插入的图片名，将pic.png放入到与post-name.md同层级目录（一般为/source/_posts目录）的名为post-name的目录中，一切正常的话，部署后就能看到图片。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;hexo-文章中插入本地图片&quot;&gt;&lt;a href=&quot;#hexo-文章中插入本地图片&quot; class=&quot;headerlink&quot; title=&quot;hexo-文章中插入本地图片&quot;&gt;&lt;/a&gt;hexo-文章中插入本地图片&lt;/h1&gt;&lt;h2 id=&quot;修改hexo站点配置&quot;&gt;&lt;a hr
+    
+    </summary>
+    
+      <category term="折腾" scheme="https://xaprice.github.io/categories/%E6%8A%98%E8%85%BE/"/>
+    
+    
+      <category term="hexo" scheme="https://xaprice.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>intellij远程调试spark源码示例</title>
     <link href="https://xaprice.github.io/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/"/>
     <id>https://xaprice.github.io/2017/03/19/intellij远程调试spark源码示例/</id>
     <published>2017-03-19T08:37:24.000Z</published>
-    <updated>2017-03-19T08:41:46.556Z</updated>
+    <updated>2017-03-19T13:14:38.391Z</updated>
     
     <content type="html"><![CDATA[<h1 id="intellij远程调试spark源码示例"><a href="#intellij远程调试spark源码示例" class="headerlink" title="intellij远程调试spark源码示例"></a>intellij远程调试spark源码示例</h1><h2 id="环境与版本"><a href="#环境与版本" class="headerlink" title="环境与版本"></a>环境与版本</h2><ul>
 <li>OS：centos 7</li>
@@ -53,8 +79,10 @@
     
     </summary>
     
+      <category term="技术-大数据" scheme="https://xaprice.github.io/categories/%E6%8A%80%E6%9C%AF-%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
-      <category term="tech-bigdata-spark" scheme="https://xaprice.github.io/tags/tech-bigdata-spark/"/>
+    
+      <category term="spark" scheme="https://xaprice.github.io/tags/spark/"/>
     
   </entry>
   

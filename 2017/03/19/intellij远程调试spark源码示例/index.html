@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="tech-bigdata-spark," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -117,7 +117,7 @@ IDE：intellij idea 14.1.4
 编写示例代码在intellij中新建一个scala工程，取名为“RemoteDebugSparkAppDemo”，添加Spark2.1.0">
 <meta property="og:image" content="https://xaprice.github.io/2017/03/19/intellij远程调试spark源码示例/debug-spark-set-vm-opts.png">
 <meta property="og:image" content="https://xaprice.github.io/2017/03/19/intellij远程调试spark源码示例/debug-spark-add-remote-debugconf.png">
-<meta property="og:updated_time" content="2017-03-19T08:41:46.556Z">
+<meta property="og:updated_time" content="2017-03-19T13:14:38.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="intellij远程调试spark源码示例">
 <meta name="twitter:description" content="intellij远程调试spark源码示例环境与版本
@@ -139,7 +139,7 @@ IDE：intellij idea 14.1.4
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -236,12 +236,12 @@ IDE：intellij idea 14.1.4
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            关于
+            分类
           </a>
         </li>
       
@@ -262,6 +262,26 @@ IDE：intellij idea 14.1.4
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tool">
+          <a href="/tool" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-cube"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -299,7 +319,7 @@ IDE：intellij idea 14.1.4
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xaprice">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -340,6 +360,28 @@ IDE：intellij idea 14.1.4
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术-大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">技术-大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -428,7 +470,7 @@ IDE：intellij idea 14.1.4
       
         <div class="post-tags">
           
-            <a href="/tags/tech-bigdata-spark/" rel="tag"># tech-bigdata-spark</a>
+            <a href="/tags/spark/" rel="tag"># spark</a>
           
         </div>
       
@@ -450,6 +492,10 @@ IDE：intellij idea 14.1.4
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/19/hexo-use-local-images/" rel="prev" title="hexo-文章中插入本地图片">
+                hexo-文章中插入本地图片 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -513,7 +559,7 @@ IDE：intellij idea 14.1.4
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="/images/avatar.png"
                alt="Xaprice" />
           <p class="site-author-name" itemprop="name">Xaprice</p>
            
@@ -525,22 +571,31 @@ IDE：intellij idea 14.1.4
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             
             
             <div class="site-state-item site-state-tags">
-              
-                <span class="site-state-item-count">1</span>
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -618,7 +673,7 @@ IDE：intellij idea 14.1.4
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -689,6 +744,13 @@ IDE：intellij idea 14.1.4
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
