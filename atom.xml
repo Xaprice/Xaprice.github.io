@@ -4,9 +4,9 @@
   <subtitle>Backup my minds.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://xaprice.github.io/"/>
   <updated>2017-03-19T08:41:46.556Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://xaprice.github.io/</id>
   
   <author>
     <name>Xaprice</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>intellij远程调试spark源码示例</title>
-    <link href="http://yoursite.com/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/"/>
-    <id>http://yoursite.com/2017/03/19/intellij远程调试spark源码示例/</id>
+    <link href="https://xaprice.github.io/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/"/>
+    <id>https://xaprice.github.io/2017/03/19/intellij远程调试spark源码示例/</id>
     <published>2017-03-19T08:37:24.000Z</published>
     <updated>2017-03-19T08:41:46.556Z</updated>
     
@@ -54,14 +54,14 @@
     </summary>
     
     
-      <category term="tech-bigdata-spark" scheme="http://yoursite.com/tags/tech-bigdata-spark/"/>
+      <category term="tech-bigdata-spark" scheme="https://xaprice.github.io/tags/tech-bigdata-spark/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2017/02/22/hello-world/"/>
-    <id>http://yoursite.com/2017/02/22/hello-world/</id>
+    <link href="https://xaprice.github.io/2017/02/22/hello-world/"/>
+    <id>https://xaprice.github.io/2017/02/22/hello-world/</id>
     <published>2017-02-22T15:19:54.287Z</published>
     <updated>2017-02-22T15:19:54.287Z</updated>
     
