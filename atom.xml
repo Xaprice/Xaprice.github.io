@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
-  
+  <title>Xaprice</title>
+  <subtitle>Backup my minds.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-02-22T15:19:54.287Z</updated>
+  <updated>2017-03-19T08:41:46.556Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Xaprice</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>intellij远程调试spark源码示例</title>
+    <link href="http://yoursite.com/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/"/>
+    <id>http://yoursite.com/2017/03/19/intellij远程调试spark源码示例/</id>
+    <published>2017-03-19T08:37:24.000Z</published>
+    <updated>2017-03-19T08:41:46.556Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="intellij远程调试spark源码示例"><a href="#intellij远程调试spark源码示例" class="headerlink" title="intellij远程调试spark源码示例"></a>intellij远程调试spark源码示例</h1><h2 id="环境与版本"><a href="#环境与版本" class="headerlink" title="环境与版本"></a>环境与版本</h2><ul>
+<li>OS：centos 7</li>
+<li>JDK版本：1.8</li>
+<li>Spark版本：2.1.0</li>
+<li>Scala版本：2.11</li>
+<li>IDE：intellij idea 14.1.4</li>
+</ul>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>完成编译Spark源码并导入intellij</li>
+</ul>
+<h2 id="编写示例代码"><a href="#编写示例代码" class="headerlink" title="编写示例代码"></a>编写示例代码</h2><p>在intellij中新建一个scala工程，取名为“RemoteDebugSparkAppDemo”，添加Spark2.1.0依赖，并编写如下的示例代码：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.demo</div><div class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">object</span> <span class="title">MainApp</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args:<span class="type">Array</span>[<span class="type">String</span>]):<span class="type">Unit</span> = &#123;</div><div class="line">    <span class="comment">//创建sc</span></div><div class="line">    <span class="keyword">val</span> sparkAppName = <span class="string">"RemoteDebugSparkAppDemo"</span></div><div class="line">    <span class="keyword">val</span> sc = getSparkContext(sparkAppName)</div><div class="line">    <span class="comment">//从数组创建第一个RDD</span></div><div class="line">    <span class="keyword">val</span> rdd1 = sc.parallelize(<span class="type">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>))</div><div class="line">    <span class="comment">//统计输入数组中奇偶数的个数</span></div><div class="line">    <span class="keyword">val</span> res = rdd1.map(x=&gt;(x%<span class="number">2</span>==<span class="number">0</span>,x)).groupByKey().mapValues(v=&gt;v.size).collect()</div><div class="line">    <span class="comment">//打印结果</span></div><div class="line">    println(res.mkString(<span class="string">","</span>))</div><div class="line">    <span class="comment">//停止sc</span></div><div class="line">    sc.stop()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">getSparkContext</span></span>(appName: <span class="type">String</span>): <span class="type">SparkContext</span> = &#123;</div><div class="line">    <span class="keyword">val</span> sparkConf =</div><div class="line">      <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(appName).setMaster(<span class="string">"local"</span>)</div><div class="line">        .set(<span class="string">"spark.driver.host"</span>, <span class="string">"127.0.0.1"</span>).set(<span class="string">"spark.driver.port"</span>, <span class="string">"7077"</span>)</div><div class="line">    <span class="keyword">new</span> <span class="type">SparkContext</span>(sparkConf)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>需要额外说明的是，getSparkContext方法中显式地设置spark.driver.host和spark.driver.port的值并非必须，单纯是为了临时解决如下错误(创建SparkContext步骤的异常)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.net.BindException: Cannot assign requested address: Service &apos;sparkDriver&apos; failed after 16 retries (starting from 0)! Consider explicitly setting the appropriate port for the service &apos;sparkDriver&apos; (for example spark.ui.port for SparkUI) to an available port or increasing spark.port.maxRetries.</div></pre></td></tr></table></figure></p>
+<h2 id="在IDE中配置远程调试参数"><a href="#在IDE中配置远程调试参数" class="headerlink" title="在IDE中配置远程调试参数"></a>在IDE中配置远程调试参数</h2><p>在这一步中需要同时打开示例工程和Spark源码工程并分别添加远程调试参数，要注意的是示例工程依赖的Spark版本必须和源码工程完全一致</p>
+<h3 id="设置示例工程远程调试参数"><a href="#设置示例工程远程调试参数" class="headerlink" title="设置示例工程远程调试参数"></a>设置示例工程远程调试参数</h3><p>在打开的示例工程“RemoteDebugSparkAppDemo”中，设置远程调试JVM选项，步骤如下：</p>
+<p>在intellij中打开”Run -&gt; Edit Configuations…”，修改下图中的选项</p>
+<p><img src="/2017/03/19/intellij远程调试spark源码示例/debug-spark-set-vm-opts.png" alt="logo"></p>
+<p>将该选项的值设置为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=localhost:5005</div></pre></td></tr></table></figure></p>
+<h3 id="设置Spark源码工程远程调试参数"><a href="#设置Spark源码工程远程调试参数" class="headerlink" title="设置Spark源码工程远程调试参数"></a>设置Spark源码工程远程调试参数</h3><p>用intellij打开Spark源码工程，打开”Run -&gt; Edit Configuations…”，添加一个新的Remote类型的Configuation项目，取名为RemoteDebug，并按照下图进行配置：</p>
+<p><img src="/2017/03/19/intellij远程调试spark源码示例/debug-spark-add-remote-debugconf.png" alt="logo"></p>
+<h2 id="测试远程调试"><a href="#测试远程调试" class="headerlink" title="测试远程调试"></a>测试远程调试</h2><p>在打开的源码工程的IDE中，设置一个断点，比如设置在DAGScheduler类的runJob方法中（设置在其他预期会进入的方法也OK），<br>执行”Run -&gt; Debug ‘RemoteDebug’”，观察IDE的Debugger窗口，如果出现下面的提示，则说明已经开始在本机的5005端口监听远程调试的客户端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Listening to the connection, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
+<p>然后在示例工程中执行”Run -&gt; Run ‘MainApp’”，如果一切顺利，将会在源码工程IDE的console窗口中打印以下提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Connected to the target VM, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
+<p>上面的”target VM”指的就是运行中的示例程序。<br>同时，源码工程会命中之前设置的断点。</p>
+<p>调试结束后，源码工程IDE的console窗口会打印以下提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Disconnected from the target VM, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;intellij远程调试spark源码示例&quot;&gt;&lt;a href=&quot;#intellij远程调试spark源码示例&quot; class=&quot;headerlink&quot; title=&quot;intellij远程调试spark源码示例&quot;&gt;&lt;/a&gt;intellij远程调试spark源码示例&lt;/
+    
+    </summary>
+    
+    
+      <category term="tech-bigdata-spark" scheme="http://yoursite.com/tags/tech-bigdata-spark/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
