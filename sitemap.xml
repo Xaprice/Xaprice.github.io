@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://xaprice.github.io/tool/index.html</loc>
+    
+    <lastmod>2017-03-28T15:05:33.594Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://xaprice.github.io/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/</loc>
     
     <lastmod>2017-03-26T09:45:13.484Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>https://xaprice.github.io/categories/index.html</loc>
     
     <lastmod>2017-03-19T14:20:18.605Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://xaprice.github.io/tool/index.html</loc>
-    
-    <lastmod>2017-03-19T13:44:21.510Z</lastmod>
     
   </url>
   
