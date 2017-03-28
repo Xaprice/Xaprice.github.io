@@ -1,28 +1,412 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Xaprice</title>
-  <subtitle>Backup my minds.</subtitle>
-  <link href="/atom.xml" rel="self"/>
+<!doctype html>
+
+
+
   
-  <link href="https://xaprice.github.io/"/>
-  <updated>2017-03-26T09:42:49.516Z</updated>
-  <id>https://xaprice.github.io/</id>
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <author>
-    <name>Xaprice</name>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-  </author>
-  
-  <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Spark-WholeStageCodeGen源码学习笔记</title>
-    <link href="https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/"/>
-    <id>https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/</id>
-    <published>2017-03-26T09:18:16.000Z</published>
-    <updated>2017-03-26T09:42:49.516Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="环境与版本"><a href="#环境与版本" class="headerlink" title="环境与版本"></a>环境与版本</h2><ul>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="spark," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Xaprice" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="环境与版本
+OS：centos 7
+JDK版本：1.8
+Spark版本：2.1.0
+Scala版本：2.11
+IDE：intellij idea 14.1.4
+
+WholeStageCodeGen简介Spark2.0集成了第二代Tungsten engine，经过我们的测试，性能相对spark1.6有明显的提升，而其中一个重要的特性就是WholeStageCodeGen，在databricks的官">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark-WholeStageCodeGen源码学习笔记">
+<meta property="og:url" content="https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/index.html">
+<meta property="og:site_name" content="Xaprice">
+<meta property="og:description" content="环境与版本
+OS：centos 7
+JDK版本：1.8
+Spark版本：2.1.0
+Scala版本：2.11
+IDE：intellij idea 14.1.4
+
+WholeStageCodeGen简介Spark2.0集成了第二代Tungsten engine，经过我们的测试，性能相对spark1.6有明显的提升，而其中一个重要的特性就是WholeStageCodeGen，在databricks的官">
+<meta property="og:updated_time" content="2017-03-26T09:42:49.516Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark-WholeStageCodeGen源码学习笔记">
+<meta name="twitter:description" content="环境与版本
+OS：centos 7
+JDK版本：1.8
+Spark版本：2.1.0
+Scala版本：2.11
+IDE：intellij idea 14.1.4
+
+WholeStageCodeGen简介Spark2.0集成了第二代Tungsten engine，经过我们的测试，性能相对spark1.6有明显的提升，而其中一个重要的特性就是WholeStageCodeGen，在databricks的官">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/"/>
+
+
+
+
+
+  <title> Spark-WholeStageCodeGen源码学习笔记 | Xaprice </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Xaprice</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Backup my minds.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tool">
+          <a href="/tool" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-cube"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xaprice">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xaprice">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spark-WholeStageCodeGen源码学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T17:18:16+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/26/spark-WholeStageCodeGen/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/26/spark-WholeStageCodeGen/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="环境与版本"><a href="#环境与版本" class="headerlink" title="环境与版本"></a>环境与版本</h2><ul>
 <li>OS：centos 7</li>
 <li>JDK版本：1.8</li>
 <li>Spark版本：2.1.0</li>
@@ -54,109 +438,377 @@
 <p>从生成的代码中可以看出generate方法返回了继承自BufferedRowIterator的GeneratedIterator对象，GeneratedIterator类重写了processNext方法，如果仔细阅读这部分代码，会发现该方法中完成了Filter和Project两个步骤的工作，实现了WholeStageCodegenExec类在其注释中说明的——“compile a subtree of plans that support codegen together into single Java function”。</p>
 <h3 id="doCodeGen"><a href="#doCodeGen" class="headerlink" title="doCodeGen()"></a>doCodeGen()</h3><p>前面在看到WholeStageCodeGenExec的doExecute()时，忽略了doCodeGen()方法的细节，这里再结合示例深入看下代码生成的具体实现。该方法代码如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Generates code for this subtree.</div><div class="line"> *</div><div class="line"> * @return the tuple of the codegen context and the actual generated source.</div><div class="line"> */</div><div class="line">def doCodeGen(): (CodegenContext, CodeAndComment) = &#123;</div><div class="line">  val ctx = new CodegenContext</div><div class="line">  val code = child.asInstanceOf[CodegenSupport].produce(ctx, this)</div><div class="line">  val source = s"""</div><div class="line">    public Object generate(Object[] references) &#123;</div><div class="line">      return new GeneratedIterator(references);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    $&#123;ctx.registerComment(s"""Codegend pipeline for\n$&#123;child.treeString.trim&#125;""")&#125;</div><div class="line">    final class GeneratedIterator extends org.apache.spark.sql.execution.BufferedRowIterator &#123;</div><div class="line"></div><div class="line">      private Object[] references;</div><div class="line">      private scala.collection.Iterator[] inputs;</div><div class="line">      $&#123;ctx.declareMutableStates()&#125;</div><div class="line"></div><div class="line">      public GeneratedIterator(Object[] references) &#123;</div><div class="line">        this.references = references;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      public void init(int index, scala.collection.Iterator[] inputs) &#123;</div><div class="line">        partitionIndex = index;</div><div class="line">        this.inputs = inputs;</div><div class="line">        $&#123;ctx.initMutableStates()&#125;</div><div class="line">        $&#123;ctx.initPartition()&#125;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      $&#123;ctx.declareAddedFunctions()&#125;</div><div class="line"></div><div class="line">      protected void processNext() throws java.io.IOException &#123;</div><div class="line">        $&#123;code.trim&#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    """.trim</div><div class="line"></div><div class="line">  // try to compile, helpful for debug</div><div class="line">  val cleanedSource = CodeFormatter.stripOverlappingComments(</div><div class="line">    new CodeAndComment(CodeFormatter.stripExtraNewLines(source), ctx.getPlaceHolderToComments()))</div><div class="line"></div><div class="line">  logDebug(s"\n$&#123;CodeFormatter.format(cleanedSource)&#125;")</div><div class="line">  (ctx, cleanedSource)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>从WholeStageCodeGenExec的角度说明doCodeGen的处理流程就是：编写了代码框架（对应代码中的source变量），具体的处理逻辑由child对象的doProduce()方法生成，由于ProjectExec和FilterExec的doProduce()的实现都是简单地将生成代码的工作委托给其child对象完成，所有最终核心逻辑代码其实是由FileSourceScanExec得doProduce()生成的。</p>
-]]></content>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spark/" rel="tag"># spark</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/19/hexo-use-local-images/" rel="next" title="hexo-文章中插入本地图片">
+                <i class="fa fa-chevron-left"></i> hexo-文章中插入本地图片
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-    <summary type="html">
+      <div class="ds-thread" data-thread-key="2017/03/26/spark-WholeStageCodeGen/"
+           data-title="Spark-WholeStageCodeGen源码学习笔记" data-url="https://xaprice.github.io/2017/03/26/spark-WholeStageCodeGen/">
+      </div>
     
-      &lt;h2 id=&quot;环境与版本&quot;&gt;&lt;a href=&quot;#环境与版本&quot; class=&quot;headerlink&quot; title=&quot;环境与版本&quot;&gt;&lt;/a&gt;环境与版本&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;OS：centos 7&lt;/li&gt;
-&lt;li&gt;JDK版本：1.8&lt;/li&gt;
-&lt;li&gt;Spark版本：2.1.0&lt;/li&gt;
-&lt;li&gt;Scala版本：2.11&lt;/li&gt;
-&lt;li&gt;IDE：intellij idea 14.1.4&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;WholeStageCodeGen简介&quot;&gt;&lt;a href=&quot;#WholeStageCodeGen简介&quot; class=&quot;headerlink&quot; title=&quot;WholeStageCodeGen简介&quot;&gt;&lt;/a&gt;WholeStageCodeGen简介&lt;/h2&gt;&lt;p&gt;Spark2.0集成了第二代Tungsten engine，经过我们的测试，性能相对spark1.6有明显的提升，而其中一个重要的特性就是WholeStageCodeGen，在databricks的官博上有详细讲解这个新特性的文章：&lt;br&gt;&lt;a href=&quot;https://databricks.com/blog/2016/05/23/apache-spark-as-a-compiler-joining-a-billion-rows-per-second-on-a-laptop.html&quot;&gt;https://databricks.com/blog/2016/05/23/apache-spark-as-a-compiler-joining-a-billion-rows-per-second-on-a-laptop.html&lt;/a&gt;&lt;br&gt;简而言之，利用WholeStageCodeGen技术，可以将一次计算过程中的多个operators作为一个整体，生成与手写代码性能相近的代码。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="https://xaprice.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="spark" scheme="https://xaprice.github.io/tags/spark/"/>
-    
-  </entry>
+  </div>
+
+
+        </div>
+        
+          
   
-  <entry>
-    <title>hexo-文章中插入本地图片</title>
-    <link href="https://xaprice.github.io/2017/03/19/hexo-use-local-images/"/>
-    <id>https://xaprice.github.io/2017/03/19/hexo-use-local-images/</id>
-    <published>2017-03-19T14:14:09.000Z</published>
-    <updated>2017-03-26T09:43:30.489Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="修改hexo站点配置"><a href="#修改hexo站点配置" class="headerlink" title="修改hexo站点配置"></a>修改hexo站点配置</h2><p>编辑站点配置文件_config.yml，将post_asset_folder设置为true（默认为false）。</p>
-<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>在站点根目录执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</div></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p>在markdown文件中，使用如下语法插入图片：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">![logo](post-name/pic.png)</div></pre></td></tr></table></figure></p>
-<p>其中post-name为文章名，pic.png是要插入的图片名，将pic.png放入到与post-name.md同层级目录（一般为/source/_posts目录）的名为post-name的目录中，一切正常的话，部署后就能看到图片。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;修改hexo站点配置&quot;&gt;&lt;a href=&quot;#修改hexo站点配置&quot; class=&quot;headerlink&quot; title=&quot;修改hexo站点配置&quot;&gt;&lt;/a&gt;修改hexo站点配置&lt;/h2&gt;&lt;p&gt;编辑站点配置文件_config.yml，将post_asset_folder设置为true（默认为false）。&lt;/p&gt;
-&lt;h2 id=&quot;安装插件&quot;&gt;&lt;a href=&quot;#安装插件&quot; class=&quot;headerlink&quot; title=&quot;安装插件&quot;&gt;&lt;/a&gt;安装插件&lt;/h2&gt;&lt;p&gt;在站点根目录执行：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;npm install https://github.com/CodeFalling/hexo-asset-image --save&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="折腾" scheme="https://xaprice.github.io/categories/%E6%8A%98%E8%85%BE/"/>
-    
-    
-      <category term="hexo" scheme="https://xaprice.github.io/tags/hexo/"/>
-    
-  </entry>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Xaprice" />
+          <p class="site-author-name" itemprop="name">Xaprice</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境与版本"><span class="nav-number">1.</span> <span class="nav-text">环境与版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WholeStageCodeGen简介"><span class="nav-number">2.</span> <span class="nav-text">WholeStageCodeGen简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码学习"><span class="nav-number">3.</span> <span class="nav-text">源码学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">3.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行过程"><span class="nav-number">3.2.</span> <span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doCodeGen"><span class="nav-number">3.3.</span> <span class="nav-text">doCodeGen()</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  <entry>
-    <title>intellij远程调试spark源码示例</title>
-    <link href="https://xaprice.github.io/2017/03/19/intellij%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95spark%E6%BA%90%E7%A0%81%E7%A4%BA%E4%BE%8B/"/>
-    <id>https://xaprice.github.io/2017/03/19/intellij远程调试spark源码示例/</id>
-    <published>2017-03-19T08:37:24.000Z</published>
-    <updated>2017-03-26T09:45:13.484Z</updated>
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xaprice</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
     
-    <content type="html"><![CDATA[<h2 id="环境与版本"><a href="#环境与版本" class="headerlink" title="环境与版本"></a>环境与版本</h2><ul>
-<li>OS：centos 7</li>
-<li>JDK版本：1.8</li>
-<li>Spark版本：2.1.0</li>
-<li>Scala版本：2.11</li>
-<li>IDE：intellij idea 14.1.4</li>
-</ul>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>完成编译Spark源码并导入intellij</li>
-</ul>
-<h2 id="编写示例代码"><a href="#编写示例代码" class="headerlink" title="编写示例代码"></a>编写示例代码</h2><p>在intellij中新建一个scala工程，取名为“RemoteDebugSparkAppDemo”，添加Spark2.1.0依赖，并编写如下的示例代码：<br><a id="more"></a><br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.demo</div><div class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">object</span> <span class="title">MainApp</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args:<span class="type">Array</span>[<span class="type">String</span>]):<span class="type">Unit</span> = &#123;</div><div class="line">    <span class="comment">//创建sc</span></div><div class="line">    <span class="keyword">val</span> sparkAppName = <span class="string">"RemoteDebugSparkAppDemo"</span></div><div class="line">    <span class="keyword">val</span> sc = getSparkContext(sparkAppName)</div><div class="line">    <span class="comment">//从数组创建第一个RDD</span></div><div class="line">    <span class="keyword">val</span> rdd1 = sc.parallelize(<span class="type">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>))</div><div class="line">    <span class="comment">//统计输入数组中奇偶数的个数</span></div><div class="line">    <span class="keyword">val</span> res = rdd1.map(x=&gt;(x%<span class="number">2</span>==<span class="number">0</span>,x)).groupByKey().mapValues(v=&gt;v.size).collect()</div><div class="line">    <span class="comment">//打印结果</span></div><div class="line">    println(res.mkString(<span class="string">","</span>))</div><div class="line">    <span class="comment">//停止sc</span></div><div class="line">    sc.stop()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">getSparkContext</span></span>(appName: <span class="type">String</span>): <span class="type">SparkContext</span> = &#123;</div><div class="line">    <span class="keyword">val</span> sparkConf =</div><div class="line">      <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(appName).setMaster(<span class="string">"local"</span>)</div><div class="line">        .set(<span class="string">"spark.driver.host"</span>, <span class="string">"127.0.0.1"</span>).set(<span class="string">"spark.driver.port"</span>, <span class="string">"7077"</span>)</div><div class="line">    <span class="keyword">new</span> <span class="type">SparkContext</span>(sparkConf)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>需要额外说明的是，getSparkContext方法中显式地设置spark.driver.host和spark.driver.port的值并非必须，单纯是为了临时解决如下错误(创建SparkContext步骤的异常)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.net.BindException: Cannot assign requested address: Service &apos;sparkDriver&apos; failed after 16 retries (starting from 0)! Consider explicitly setting the appropriate port for the service &apos;sparkDriver&apos; (for example spark.ui.port for SparkUI) to an available port or increasing spark.port.maxRetries.</div></pre></td></tr></table></figure></p>
-<h2 id="在IDE中配置远程调试参数"><a href="#在IDE中配置远程调试参数" class="headerlink" title="在IDE中配置远程调试参数"></a>在IDE中配置远程调试参数</h2><p>在这一步中需要同时打开示例工程和Spark源码工程并分别添加远程调试参数，要注意的是示例工程依赖的Spark版本必须和源码工程完全一致</p>
-<h3 id="设置示例工程远程调试参数"><a href="#设置示例工程远程调试参数" class="headerlink" title="设置示例工程远程调试参数"></a>设置示例工程远程调试参数</h3><p>在打开的示例工程“RemoteDebugSparkAppDemo”中，设置远程调试JVM选项，步骤如下：</p>
-<p>在intellij中打开”Run -&gt; Edit Configuations…”，修改下图中的选项</p>
-<p><img src="/2017/03/19/intellij远程调试spark源码示例/debug-spark-set-vm-opts.png" alt="logo"></p>
-<p>将该选项的值设置为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=localhost:5005</div></pre></td></tr></table></figure></p>
-<h3 id="设置Spark源码工程远程调试参数"><a href="#设置Spark源码工程远程调试参数" class="headerlink" title="设置Spark源码工程远程调试参数"></a>设置Spark源码工程远程调试参数</h3><p>用intellij打开Spark源码工程，打开”Run -&gt; Edit Configuations…”，添加一个新的Remote类型的Configuation项目，取名为RemoteDebug，并按照下图进行配置：</p>
-<p><img src="/2017/03/19/intellij远程调试spark源码示例/debug-spark-add-remote-debugconf.png" alt="logo"></p>
-<h2 id="测试远程调试"><a href="#测试远程调试" class="headerlink" title="测试远程调试"></a>测试远程调试</h2><p>在打开的源码工程的IDE中，设置一个断点，比如设置在DAGScheduler类的runJob方法中（设置在其他预期会进入的方法也OK），<br>执行”Run -&gt; Debug ‘RemoteDebug’”，观察IDE的Debugger窗口，如果出现下面的提示，则说明已经开始在本机的5005端口监听远程调试的客户端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Listening to the connection, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
-<p>然后在示例工程中执行”Run -&gt; Run ‘MainApp’”，如果一切顺利，将会在源码工程IDE的console窗口中打印以下提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Connected to the target VM, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
-<p>上面的”target VM”指的就是运行中的示例程序。<br>同时，源码工程会命中之前设置的断点。</p>
-<p>调试结束后，源码工程IDE的console窗口会打印以下提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Disconnected from the target VM, address: &apos;localhost:5005&apos;, transport: &apos;socket&apos;</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;环境与版本&quot;&gt;&lt;a href=&quot;#环境与版本&quot; class=&quot;headerlink&quot; title=&quot;环境与版本&quot;&gt;&lt;/a&gt;环境与版本&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;OS：centos 7&lt;/li&gt;
-&lt;li&gt;JDK版本：1.8&lt;/li&gt;
-&lt;li&gt;Spark版本：2.1.0&lt;/li&gt;
-&lt;li&gt;Scala版本：2.11&lt;/li&gt;
-&lt;li&gt;IDE：intellij idea 14.1.4&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;前置条件&quot;&gt;&lt;a href=&quot;#前置条件&quot; class=&quot;headerlink&quot; title=&quot;前置条件&quot;&gt;&lt;/a&gt;前置条件&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;完成编译Spark源码并导入intellij&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;编写示例代码&quot;&gt;&lt;a href=&quot;#编写示例代码&quot; class=&quot;headerlink&quot; title=&quot;编写示例代码&quot;&gt;&lt;/a&gt;编写示例代码&lt;/h2&gt;&lt;p&gt;在intellij中新建一个scala工程，取名为“RemoteDebugSparkAppDemo”，添加Spark2.1.0依赖，并编写如下的示例代码：&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="技术" scheme="https://xaprice.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
     
     
-      <category term="spark" scheme="https://xaprice.github.io/tags/spark/"/>
-    
-  </entry>
+  </div>
+
   
-</feed>
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xaprice"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
